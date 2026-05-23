@@ -108,13 +108,13 @@ export default function Portfolio() {
             <div className="grid grid-cols-2 gap-8">
               <div>
                 <p className="text-neutral-500 font-semibold tracking-widest mb-2 uppercase text-xs">Github Matrix</p>
-                <a href="#" className="text-xl font-medium flex items-center gap-2 hover:text-neutral-300">
+                <a href="https://github.com/tagadearpit" className="text-xl font-medium flex items-center gap-2 hover:text-neutral-300">
                   /tagadearpit <ExternalLink size={18} />
                 </a>
               </div>
               <div>
                 <p className="text-neutral-500 font-semibold tracking-widest mb-2 uppercase text-xs">LinkedIn Link</p>
-                <a href="#" className="text-xl font-medium flex items-center gap-2 hover:text-neutral-300">
+                <a href="www.linkedin.com/in/tagadearpit" className="text-xl font-medium flex items-center gap-2 hover:text-neutral-300">
                   Connect <ExternalLink size={18} />
                 </a>
               </div>

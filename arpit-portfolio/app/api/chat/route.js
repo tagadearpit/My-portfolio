@@ -8,6 +8,7 @@ export async function POST(req: Request) {
   try {
     const { message } = await req.json();
 
+    // Changed to the correct model name
     const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
     
     // System instruction to guide the AI's persona

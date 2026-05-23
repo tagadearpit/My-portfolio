@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+export const metadata: Metadata = {
+  title: "Arpit Tagade | AI & Software Portfolio",
+  description: "Portfolio of Arpit Tagade, a developer bridging the gap between AI intelligence and Robust software.",
+};
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
