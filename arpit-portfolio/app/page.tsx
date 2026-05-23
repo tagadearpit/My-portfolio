@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { MessageSquare, X, Send, ExternalLink, Code2, Database, Layout, Cpu, Server, FileText, CheckCircle } from "lucide-react";
+import { MessageSquare, X, Send, Code2, Database, Layout, Cpu, Server, FileText, CheckCircle } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function Portfolio() {
@@ -56,35 +56,44 @@ export default function Portfolio() {
   };
 
   return (
-    <main className="min-h-screen bg-black text-white selection:bg-neutral-800 font-sans pb-12 overflow-hidden">
-      {/* Navigation */}
-      <motion.nav 
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="flex justify-between items-center px-8 py-6 border-b border-neutral-900"
-      >
-        <div className="font-bold tracking-widest text-sm uppercase">Arpit Tagade</div>
-        <div className="hidden md:flex gap-6 text-xs font-semibold tracking-widest text-neutral-400">
-          <span className="hover:text-white cursor-pointer transition-colors">Home</span>
-          <span className="hover:text-white cursor-pointer transition-colors">Expertise</span>
-          <span className="hover:text-white cursor-pointer transition-colors">Selection</span>
-        </div>
-      </motion.nav>
+    <main className="min-h-screen bg-black text-white selection:bg-neutral-800 font-sans pb-12 overflow-hidden relative">
+      
+      {/* Subtle High-Tech Grid Background */}
+      <div className="absolute inset-0 z-0 h-full w-full bg-black bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px]">
+        <div className="absolute inset-0 bg-black [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
+      </div>
 
-      <div className="max-w-6xl mx-auto px-8">
+      <div className="relative z-10 max-w-6xl mx-auto px-8">
+        {/* Navigation */}
+        <motion.nav 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="flex justify-between items-center py-6 border-b border-neutral-900"
+        >
+          <div className="font-bold tracking-widest text-sm uppercase">Arpit Tagade</div>
+          <div className="hidden md:flex gap-6 text-xs font-semibold tracking-widest text-neutral-400">
+            <span className="hover:text-white cursor-none transition-colors">Home</span>
+            <span className="hover:text-white cursor-none transition-colors">Expertise</span>
+            <span className="hover:text-white cursor-none transition-colors">Selection</span>
+          </div>
+        </motion.nav>
+
         {/* Hero Section */}
         <motion.section 
           initial="hidden"
           animate="visible"
           variants={staggerContainer}
-          className="pt-24 pb-32 border-b border-neutral-900"
+          className="pt-24 pb-20 border-b border-neutral-900"
         >
           <motion.p variants={fadeUp} className="text-neutral-500 text-xs font-semibold tracking-widest mb-6 uppercase">
             Nagpur, Maharashtra
           </motion.p>
-          <motion.h1 variants={fadeUp} className="text-7xl md:text-9xl font-extrabold tracking-tighter leading-none mb-8">
-            ARPIT <br /> TAGADE
+          <motion.h1 variants={fadeUp} className="text-[5rem] md:text-[10rem] font-extrabold tracking-tighter leading-[0.85] mb-8 uppercase">
+            <span className="text-white">ARPIT</span> <br />
+            <span className="text-transparent" style={{ WebkitTextStroke: "2px rgba(255,255,255,0.8)" }}>
+              TAGADE
+            </span>
           </motion.h1>
           <motion.p variants={fadeUp} className="text-2xl md:text-4xl font-light text-neutral-300 max-w-3xl mb-12 leading-tight">
             Passionate developer bridging the gap between <span className="italic font-medium text-white">AI intelligence</span> and <span className="italic font-medium text-white">Robust software.</span>
@@ -92,16 +101,36 @@ export default function Portfolio() {
           <motion.div variants={fadeUp} className="flex flex-wrap gap-4">
             <button 
               onClick={() => setIsChatOpen(true)}
-              className="bg-white text-black px-8 py-4 rounded-full font-semibold hover:scale-105 transition-transform duration-300"
+              className="bg-white text-black px-8 py-4 rounded-full font-semibold hover:scale-105 transition-transform duration-300 cursor-none"
             >
               Start a conversation
             </button>
-            <button className="border border-neutral-700 px-8 py-4 rounded-full font-semibold hover:border-white hover:bg-neutral-900 transition-all duration-300">
+            <button className="border border-neutral-700 px-8 py-4 rounded-full font-semibold hover:border-white hover:bg-neutral-900 transition-all duration-300 cursor-none">
               View Resume
             </button>
           </motion.div>
         </motion.section>
+      </div>
 
+      {/* Infinite Scrolling Tech Marquee */}
+      <div className="relative z-10 w-full overflow-hidden border-b border-neutral-900 py-6 bg-neutral-950/50 flex whitespace-nowrap backdrop-blur-sm">
+        <motion.div 
+          className="flex gap-16 text-2xl md:text-4xl font-bold uppercase tracking-widest text-neutral-700"
+          animate={{ x: ["0%", "-50%"] }}
+          transition={{ repeat: Infinity, ease: "linear", duration: 20 }}
+        >
+          <span>AI INTELLIGENCE</span> <span>•</span>
+          <span>JAVA ARCHITECTURE</span> <span>•</span>
+          <span>HARDWARE INTEGRATION</span> <span>•</span>
+          <span>ROBUST SOFTWARE</span> <span>•</span>
+          <span>AI INTELLIGENCE</span> <span>•</span>
+          <span>JAVA ARCHITECTURE</span> <span>•</span>
+          <span>HARDWARE INTEGRATION</span> <span>•</span>
+          <span>ROBUST SOFTWARE</span>
+        </motion.div>
+      </div>
+
+      <div className="relative z-10 max-w-6xl mx-auto px-8">
         {/* 15 Block Skills Section */}
         <section className="py-24 border-b border-neutral-900">
           <motion.div 
@@ -134,7 +163,7 @@ export default function Portfolio() {
               { icon: FileText, title: "Software Documentation", cat: "Other" },
               { icon: Database, title: "SQL Plus", cat: "Database" },
               { icon: Code2, title: "Programming Languages", cat: "Core" },
-              { icon: Cpu, title: "Hardware Integration (ESP32/Arduino)", cat: "IoT" },
+              { icon: Cpu, title: "Hardware Integration (ESP32)", cat: "IoT" },
               { icon: Server, title: "IoT System Design", cat: "Hardware" },
               { icon: Layout, title: "Web & UI Development", cat: "Frontend" }
             ].map((skill, i) => (
@@ -166,35 +195,33 @@ export default function Portfolio() {
           >
             <h2 className="text-6xl md:text-[7rem] font-extrabold tracking-tighter mb-8 leading-[0.9]">
               HAVE A VISION?<br />
-              <span className="text-neutral-600">LET'S BRING<br />IT TO LIFE.</span>
+              <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(115,115,115,0.8)" }}>LET'S BRING<br />IT TO LIFE.</span>
             </h2>
             <a 
               href="mailto:arpittagade5@gmail.com" 
-              className="inline-block mt-8 text-2xl md:text-5xl font-medium text-neutral-300 hover:text-white relative group"
+              className="inline-block mt-8 text-2xl md:text-5xl font-medium text-neutral-300 hover:text-white relative group cursor-none"
             >
               ARPITTAGADE5@GMAIL.COM
               <span className="absolute -bottom-2 left-0 w-0 h-[2px] bg-white transition-all duration-300 group-hover:w-full"></span>
             </a>
           </motion.div>
 
-          {/* Footer Navigation Grid */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-12 text-sm border-t border-neutral-900 pt-12">
             <div>
               <p className="text-neutral-500 font-semibold tracking-widest mb-6 uppercase text-xs">Navigation</p>
               <ul className="flex flex-col gap-3 text-neutral-400">
-                <li><a href="#" className="hover:text-white transition-colors">Home</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Expertise</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Selection</a></li>
+                <li><a href="#" className="hover:text-white transition-colors cursor-none">Home</a></li>
+                <li><a href="#" className="hover:text-white transition-colors cursor-none">Expertise</a></li>
+                <li><a href="#" className="hover:text-white transition-colors cursor-none">Selection</a></li>
               </ul>
             </div>
             
             <div>
               <p className="text-neutral-500 font-semibold tracking-widest mb-6 uppercase text-xs">Social</p>
               <ul className="flex flex-col gap-3 text-neutral-400">
-                <li><a href="https://github.com/tagadearpit" className="hover:text-white transition-colors">GitHub</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">LinkedIn</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Instagram (Coding Challenge)</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">X</a></li>
+                <li><a href="https://github.com/tagadearpit" className="hover:text-white transition-colors cursor-none">GitHub</a></li>
+                <li><a href="#" className="hover:text-white transition-colors cursor-none">LinkedIn</a></li>
+                <li><a href="#" className="hover:text-white transition-colors cursor-none">Instagram</a></li>
               </ul>
             </div>
 
@@ -216,7 +243,7 @@ export default function Portfolio() {
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="bg-neutral-900 border border-neutral-800 w-[350px] h-[500px] rounded-2xl shadow-2xl mb-4 flex flex-col overflow-hidden"
+            className="bg-neutral-900 border border-neutral-800 w-[350px] h-[500px] rounded-2xl shadow-2xl mb-4 flex flex-col overflow-hidden cursor-auto"
           >
             <div className="bg-black border-b border-neutral-800 p-4 flex justify-between items-center">
               <div className="flex items-center gap-3">
@@ -225,7 +252,7 @@ export default function Portfolio() {
                 </div>
                 <span className="font-medium text-sm">Arpit's AI Assistant</span>
               </div>
-              <button onClick={() => setIsChatOpen(false)} className="text-neutral-400 hover:text-white transition-colors">
+              <button onClick={() => setIsChatOpen(false)} className="text-neutral-400 hover:text-white transition-colors cursor-none">
                 <X size={20} />
               </button>
             </div>
@@ -258,12 +285,12 @@ export default function Portfolio() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Ask me something..."
-                className="flex-1 bg-neutral-900 border border-neutral-800 rounded-full px-4 py-2 text-sm focus:outline-none focus:border-neutral-500 transition-colors"
+                className="flex-1 bg-neutral-900 border border-neutral-800 rounded-full px-4 py-2 text-sm focus:outline-none focus:border-neutral-500 transition-colors cursor-none"
               />
               <button 
                 type="submit" 
                 disabled={!input.trim() || isLoading}
-                className="w-10 h-10 rounded-full bg-white text-black flex items-center justify-center hover:bg-neutral-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="w-10 h-10 rounded-full bg-white text-black flex items-center justify-center hover:bg-neutral-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-none"
               >
                 <Send size={16} />
               </button>
@@ -278,7 +305,7 @@ export default function Portfolio() {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => setIsChatOpen(true)}
-            className="w-14 h-14 bg-white text-black rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(255,255,255,0.2)]"
+            className="w-14 h-14 bg-white text-black rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(255,255,255,0.2)] cursor-none"
           >
             <MessageSquare size={24} />
           </motion.button>
