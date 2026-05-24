@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { MessageSquare, X, Send, Code2, Database, Layout, Cpu, Server, FileText, CheckCircle } from "lucide-react";
+import { MessageSquare, X, Send, Code2, Database, Layout, Cpu, Server, FileText, CheckCircle, ExternalLink } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function Portfolio() {
@@ -69,22 +69,23 @@ export default function Portfolio() {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="flex justify-between items-center py-6 border-b border-neutral-900"
+          className="flex justify-between items-center py-6 border-b border-neutral-900 sticky top-0 bg-black/80 backdrop-blur-md z-50"
         >
           <div className="font-bold tracking-widest text-sm uppercase">Arpit Tagade</div>
           <div className="hidden md:flex gap-6 text-xs font-semibold tracking-widest text-neutral-400">
-            <span className="hover:text-white cursor-none transition-colors">Home</span>
-            <span className="hover:text-white cursor-none transition-colors">Expertise</span>
-            <span className="hover:text-white cursor-none transition-colors">Selection</span>
+            <a href="#home" className="hover:text-white cursor-none transition-colors">Home</a>
+            <a href="#expertise" className="hover:text-white cursor-none transition-colors">Expertise</a>
+            <a href="#selection" className="hover:text-white cursor-none transition-colors">Selection</a>
           </div>
         </motion.nav>
 
         {/* Hero Section */}
         <motion.section 
+          id="home"
           initial="hidden"
           animate="visible"
           variants={staggerContainer}
-          className="pt-24 pb-20 border-b border-neutral-900"
+          className="pt-24 pb-20 border-b border-neutral-900 scroll-mt-24"
         >
           <motion.p variants={fadeUp} className="text-neutral-500 text-xs font-semibold tracking-widest mb-6 uppercase">
             Nagpur, Maharashtra
@@ -105,9 +106,14 @@ export default function Portfolio() {
             >
               Start a conversation
             </button>
-            <button className="border border-neutral-700 px-8 py-4 rounded-full font-semibold hover:border-white hover:bg-neutral-900 transition-all duration-300 cursor-none">
+            <a 
+              href="/Resume.pdf" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="border border-neutral-700 px-8 py-4 rounded-full font-semibold hover:border-white hover:bg-neutral-900 transition-all duration-300 cursor-none inline-block"
+            >
               View Resume
-            </button>
+            </a>
           </motion.div>
         </motion.section>
       </div>
@@ -131,8 +137,9 @@ export default function Portfolio() {
       </div>
 
       <div className="relative z-10 max-w-6xl mx-auto px-8">
-        {/* 15 Block Skills Section */}
-        <section className="py-24 border-b border-neutral-900">
+        
+        {/* 15 Block Skills (Expertise) Section */}
+        <section id="expertise" className="py-24 border-b border-neutral-900 scroll-mt-24">
           <motion.div 
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -184,6 +191,54 @@ export default function Portfolio() {
           </motion.div>
         </section>
 
+        {/* Projects (Selection) Section */}
+        <section id="selection" className="py-24 border-b border-neutral-900 scroll-mt-24">
+          <motion.div 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, margin: "-100px" }}
+            className="mb-16"
+          >
+            <h2 className="text-3xl md:text-5xl font-medium tracking-tight mb-4">Project Selection</h2>
+            <p className="text-neutral-500">A curated showcase of my recent architectural and AI engineering work.</p>
+          </motion.div>
+
+          <div className="flex flex-col gap-24">
+            {[
+              { num: "01", title: "AI Chat Assistant", desc: "A real-time AI assistant built using Gemini API to help users navigate my portfolio.", tags: ["REACT", "EXPRESS", "GEMINI API"] },
+              { num: "02", title: "Inventory Management System", desc: "A robust Java-based application for tracking stock levels using JDBC and Oracle SQL.", tags: ["JAVA", "JDBC", "ORACLE SQL", "AWT"] },
+              { num: "03", title: "Smart Traffic Monitor", desc: "Advanced traffic analysis system using AI techniques to optimize signal timings.", tags: ["C++", "AI ALGORITHMS", "DATA SCIENCE"] }
+            ].map((proj) => (
+              <motion.div 
+                key={proj.num} 
+                variants={fadeUp}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                className="flex flex-col md:flex-row gap-8 items-start group cursor-none"
+              >
+                <span className="text-6xl md:text-8xl font-bold text-neutral-800 group-hover:text-transparent transition-colors duration-500" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.2)" }}>
+                  {proj.num}
+                </span>
+                <div className="flex-1 mt-4">
+                  <h3 className="text-4xl md:text-5xl font-bold mb-4">{proj.title}</h3>
+                  <p className="text-neutral-400 text-lg md:text-xl max-w-2xl mb-8">{proj.desc}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {proj.tags.map(tag => (
+                      <span key={tag} className="px-3 py-1 border border-neutral-800 rounded text-xs font-semibold tracking-widest text-neutral-400">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div className="hidden md:flex w-16 h-16 rounded-full border border-neutral-800 items-center justify-center group-hover:bg-white group-hover:text-black transition-all duration-300">
+                  <ExternalLink size={24} />
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
         {/* Detailed Footer Section */}
         <footer className="pt-32 pb-12">
           <motion.div 
@@ -210,9 +265,9 @@ export default function Portfolio() {
             <div>
               <p className="text-neutral-500 font-semibold tracking-widest mb-6 uppercase text-xs">Navigation</p>
               <ul className="flex flex-col gap-3 text-neutral-400">
-                <li><a href="#" className="hover:text-white transition-colors cursor-none">Home</a></li>
-                <li><a href="#" className="hover:text-white transition-colors cursor-none">Expertise</a></li>
-                <li><a href="#" className="hover:text-white transition-colors cursor-none">Selection</a></li>
+                <li><a href="#home" className="hover:text-white transition-colors cursor-none">Home</a></li>
+                <li><a href="#expertise" className="hover:text-white transition-colors cursor-none">Expertise</a></li>
+                <li><a href="#selection" className="hover:text-white transition-colors cursor-none">Selection</a></li>
               </ul>
             </div>
             
