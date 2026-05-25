@@ -242,10 +242,9 @@ export default function Portfolio() {
 
           <div className="flex flex-col gap-24">
             {[
-              { num: "01", title: "Neosis: Real-Time Platform", desc: "Engineered a low-latency communication platform using Java Spring Boot and WebSockets, achieving sub-100ms message delivery.", tags: ["JAVA", "SPRING BOOT", "WEBSOCKETS", "REACT"] },
-              { num: "02", title: "Intelligent AI Portfolio", desc: "A high-performance personal portfolio engineered with Next.js and a custom Gemini 2.5 Flash assistant.", tags: ["NEXT.JS", "TYPESCRIPT", "GEMINI API"] },
-              { num: "03", title: "Project CandyRobot", desc: "Dynamic physical robotic interface combining ESP32 microcontrollers with cloud AI for real-time visual feedback.", tags: ["C++", "ESP32", "IoT", "HARDWARE"] },
-              { num: "04", title: "Monika-AI", desc: "Interactive, server-backed web application providing users with an intelligent digital interface powered by Node.js.", tags: ["NODE.JS", "VANILLA JS", "REST API"] }
+              { num: "01", title: "Neosis: Real-Time Platform", desc: "Engineered a low-latency communication platform using Java Spring Boot and WebSockets, achieving sub-100ms message delivery.", tags: ["JAVA", "SPRING BOOT", "WEBSOCKETS", "REACT"], link: "https://neosis-static-site.onrender.com" },
+              { num: "02", title: "Intelligent AI Portfolio", desc: "A high-performance personal portfolio engineered with Next.js and a custom Gemini 2.5 Flash assistant.", tags: ["NEXT.JS", "TYPESCRIPT", "GEMINI API"], link: "https://github.com/tagadearpit/my-portiofoli" },
+              { num: "03", title: "Monika-AI", desc: "Interactive, server-backed web application providing users with an intelligent digital interface powered by Node.js.", tags: ["NODE.JS", "VANILLA JS", "REST API"], link: "https://monika-ai-0jpf.onrender.com" }
             ].map((proj) => (
               <motion.div 
                 key={proj.num} 
@@ -271,9 +270,9 @@ export default function Portfolio() {
                   </div>
                 </div>
                 <a 
-                  href={proj.num === "01" ? "https://neosis-static-site.onrender.com" : proj.num === "04" ? "https://monika-ai-0jpf.onrender.com" : "#"} 
+                  href={proj.link} 
                   target="_blank" rel="noopener noreferrer"
-                  className="hidden md:flex w-16 h-16 rounded-full border border-neutral-800 items-center justify-center group-hover:bg-white group-hover:text-black group-hover:rotate-45 transition-all duration-300"
+                  className="hidden md:flex w-16 h-16 rounded-full border border-neutral-800 items-center justify-center group-hover:bg-white group-hover:text-black group-hover:rotate-45 transition-all duration-300 cursor-none"
                 >
                   <ExternalLink size={24} />
                 </a>
