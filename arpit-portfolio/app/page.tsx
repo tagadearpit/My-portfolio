@@ -2,7 +2,39 @@
 
 import { useState, useRef, useEffect } from "react";
 import { MessageSquare, X, Send, Code2, Database, Layout, Cpu, Server, FileText, CheckCircle, ExternalLink } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, useScroll, useSpring, useTransform } from "framer-motion";
+
+// --- Subcomponent for the Spotlight Hover Effect ---
+const SkillCard = ({ skill, i, fadeUp }: { skill: any, i: number, fadeUp: any }) => {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setMousePosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+  };
+
+  return (
+    <motion.div
+      variants={fadeUp}
+      onMouseMove={handleMouseMove}
+      whileHover={{ y: -5, scale: 1.02 }}
+      className="relative group bg-neutral-900/40 border border-neutral-800 p-8 rounded-2xl overflow-hidden transition-all duration-300 cursor-none"
+    >
+      {/* Dynamic Spotlight Glow */}
+      <div 
+        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+        style={{ background: `radial-gradient(400px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(255,255,255,0.08), transparent 40%)` }}
+      />
+      
+      <div className="relative z-10 flex justify-between items-start mb-8">
+        <skill.icon className="text-neutral-500 group-hover:text-white transition-colors duration-300" size={32} />
+        <span className="text-neutral-600 font-mono text-xs">{String(i + 1).padStart(2, '0')}</span>
+      </div>
+      <p className="relative z-10 text-neutral-500 text-xs font-semibold tracking-widest uppercase mb-2">{skill.cat}</p>
+      <h3 className="relative z-10 text-xl font-medium">{skill.title}</h3>
+    </motion.div>
+  );
+};
 
 export default function Portfolio() {
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -12,6 +44,11 @@ export default function Portfolio() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Scroll Progress and Parallax setup
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -58,10 +95,16 @@ export default function Portfolio() {
   return (
     <main className="min-h-screen bg-black text-white selection:bg-neutral-800 font-sans pb-12 overflow-hidden relative">
       
-      {/* Subtle High-Tech Grid Background */}
-      <div className="absolute inset-0 z-0 h-full w-full bg-black bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px]">
+      {/* Top Scroll Progress Bar */}
+      <motion.div className="fixed top-0 left-0 right-0 h-[3px] bg-white origin-left z-[100]" style={{ scaleX }} />
+
+      {/* Parallax Subtle High-Tech Grid Background */}
+      <motion.div 
+        style={{ y: backgroundY }}
+        className="absolute inset-0 z-0 h-[150%] w-full bg-black bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px]"
+      >
         <div className="absolute inset-0 bg-black [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
-      </div>
+      </motion.div>
 
       <div className="relative z-10 max-w-6xl mx-auto px-8">
         {/* Navigation */}
@@ -100,20 +143,24 @@ export default function Portfolio() {
             Passionate developer bridging the gap between <span className="italic font-medium text-white">AI intelligence</span> and <span className="italic font-medium text-white">Robust software.</span>
           </motion.p>
           <motion.div variants={fadeUp} className="flex flex-wrap gap-4">
-            <button 
+            <motion.button 
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => setIsChatOpen(true)}
-              className="bg-white text-black px-8 py-4 rounded-full font-semibold hover:scale-105 transition-transform duration-300 cursor-none"
+              className="bg-white text-black px-8 py-4 rounded-full font-semibold cursor-none"
             >
               Start a conversation
-            </button>
-            <a 
+            </motion.button>
+            <motion.a 
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               href="/Resume.pdf" 
               target="_blank" 
               rel="noopener noreferrer"
               className="border border-neutral-700 px-8 py-4 rounded-full font-semibold hover:border-white hover:bg-neutral-900 transition-all duration-300 cursor-none inline-block"
             >
               View Resume
-            </a>
+            </motion.a>
           </motion.div>
         </motion.section>
       </div>
@@ -141,8 +188,9 @@ export default function Portfolio() {
         {/* 15 Block Skills (Expertise) Section */}
         <section id="expertise" className="py-24 border-b border-neutral-900 scroll-mt-24">
           <motion.div 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
             viewport={{ once: true, margin: "-100px" }}
             className="mb-16"
           >
@@ -174,19 +222,7 @@ export default function Portfolio() {
               { icon: Server, title: "IoT System Design", cat: "Hardware" },
               { icon: Layout, title: "Web & UI Development", cat: "Frontend" }
             ].map((skill, i) => (
-              <motion.div 
-                key={i} 
-                variants={fadeUp}
-                whileHover={{ y: -5, backgroundColor: "rgba(23, 23, 23, 1)" }}
-                className="bg-neutral-900/40 border border-neutral-800 p-8 rounded-2xl transition-all duration-300"
-              >
-                <div className="flex justify-between items-start mb-8">
-                  <skill.icon className="text-neutral-500" size={32} />
-                  <span className="text-neutral-600 font-mono text-xs">{String(i + 1).padStart(2, '0')}</span>
-                </div>
-                <p className="text-neutral-500 text-xs font-semibold tracking-widest uppercase mb-2">{skill.cat}</p>
-                <h3 className="text-xl font-medium">{skill.title}</h3>
-              </motion.div>
+              <SkillCard key={i} skill={skill} i={i} fadeUp={fadeUp} />
             ))}
           </motion.div>
         </section>
@@ -194,8 +230,9 @@ export default function Portfolio() {
         {/* Projects (Selection) Section */}
         <section id="selection" className="py-24 border-b border-neutral-900 scroll-mt-24">
           <motion.div 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
             viewport={{ once: true, margin: "-100px" }}
             className="mb-16"
           >
@@ -205,17 +242,19 @@ export default function Portfolio() {
 
           <div className="flex flex-col gap-24">
             {[
-              { num: "01", title: "AI Chat Assistant", desc: "A real-time AI assistant built using Gemini API to help users navigate my portfolio.", tags: ["REACT", "EXPRESS", "GEMINI API"] },
-              { num: "02", title: "Inventory Management System", desc: "A robust Java-based application for tracking stock levels using JDBC and Oracle SQL.", tags: ["JAVA", "JDBC", "ORACLE SQL", "AWT"] },
-              { num: "03", title: "Smart Traffic Monitor", desc: "Advanced traffic analysis system using AI techniques to optimize signal timings.", tags: ["C++", "AI ALGORITHMS", "DATA SCIENCE"] }
+              { num: "01", title: "Neosis: Real-Time Platform", desc: "Engineered a low-latency communication platform using Java Spring Boot and WebSockets, achieving sub-100ms message delivery.", tags: ["JAVA", "SPRING BOOT", "WEBSOCKETS", "REACT"] },
+              { num: "02", title: "Intelligent AI Portfolio", desc: "A high-performance personal portfolio engineered with Next.js and a custom Gemini 2.5 Flash assistant.", tags: ["NEXT.JS", "TYPESCRIPT", "GEMINI API"] },
+              { num: "03", title: "Project CandyRobot", desc: "Dynamic physical robotic interface combining ESP32 microcontrollers with cloud AI for real-time visual feedback.", tags: ["C++", "ESP32", "IoT", "HARDWARE"] },
+              { num: "04", title: "Monika-AI", desc: "Interactive, server-backed web application providing users with an intelligent digital interface powered by Node.js.", tags: ["NODE.JS", "VANILLA JS", "REST API"] }
             ].map((proj) => (
               <motion.div 
                 key={proj.num} 
                 variants={fadeUp}
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: true }}
-                className="flex flex-col md:flex-row gap-8 items-start group cursor-none"
+                viewport={{ once: true, margin: "-50px" }}
+                whileHover={{ x: 10 }}
+                className="flex flex-col md:flex-row gap-8 items-start group cursor-none transition-transform"
               >
                 <span className="text-6xl md:text-8xl font-bold text-neutral-800 group-hover:text-transparent transition-colors duration-500" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.2)" }}>
                   {proj.num}
@@ -231,9 +270,13 @@ export default function Portfolio() {
                     ))}
                   </div>
                 </div>
-                <div className="hidden md:flex w-16 h-16 rounded-full border border-neutral-800 items-center justify-center group-hover:bg-white group-hover:text-black transition-all duration-300">
+                <a 
+                  href={proj.num === "01" ? "https://neosis-static-site.onrender.com" : proj.num === "04" ? "https://monika-ai-0jpf.onrender.com" : "#"} 
+                  target="_blank" rel="noopener noreferrer"
+                  className="hidden md:flex w-16 h-16 rounded-full border border-neutral-800 items-center justify-center group-hover:bg-white group-hover:text-black group-hover:rotate-45 transition-all duration-300"
+                >
                   <ExternalLink size={24} />
-                </div>
+                </a>
               </motion.div>
             ))}
           </div>
@@ -275,8 +318,7 @@ export default function Portfolio() {
               <p className="text-neutral-500 font-semibold tracking-widest mb-6 uppercase text-xs">Social</p>
               <ul className="flex flex-col gap-3 text-neutral-400">
                 <li><a href="https://github.com/tagadearpit" className="hover:text-white transition-colors cursor-none">GitHub</a></li>
-                <li><a href="#" className="hover:text-white transition-colors cursor-none">LinkedIn</a></li>
-                <li><a href="#" className="hover:text-white transition-colors cursor-none">Instagram</a></li>
+                <li><a href="https://www.linkedin.com/in/tagadearpit" className="hover:text-white transition-colors cursor-none">LinkedIn</a></li>
               </ul>
             </div>
 
