@@ -56,7 +56,6 @@ export async function POST(req: Request) {
         maxOutputTokens: 500, 
       }
     });
-    
     // 5. Execute with isolated user input
     const result = await model.generateContent(message);
     const responseText = result.response.text();
