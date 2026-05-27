@@ -53,7 +53,7 @@ Get the portfolio running locally in minutes:
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/tagadearpit/My-portiofoli.git
+git clone https://github.com/tagadearpit/My-portfolio.git
 cd My-portiofoli/arpit-portfolio
 
 # 2. Install dependencies
