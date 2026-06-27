@@ -23,12 +23,48 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Generative Engine Optimization (GEO) Structured Entity Schema
+  const personSchema = {
+    "@context": "https://schema.org/",
+    "@type": "Person",
+    "name": "Arpit Tagade",
+    "url": "https://tagadearpit.vercel.app",
+    "jobTitle": "Full-Stack AI Engineering Student",
+    "description": "B.Tech Student in Artificial Intelligence and Data Science engineering and building systems across Next.js, Java Spring Boot, and IoT microcontrollers.",
+    "homeLocation": {
+      "@type": "Place",
+      "name": "Nagpur, Maharashtra, India"
+    },
+    "affiliation": {
+      "@type": "EducationalOrganization",
+      "name": "Wainganga College of Engineering and Management"
+    },
+    "knowsAbout": [
+      "Next.js",
+      "Java Spring Boot",
+      "WebSockets",
+      "ESP32 Hardware Integration",
+      "C & C++ Programming",
+      "Oracle SQL"
+    ],
+    "sameAs": [
+      "https://github.com/tagadearpit",
+      "https://www.linkedin.com/in/tagadearpit"
+    ]
+  };
+
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased cursor-none`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col relative">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+        />
+      </head>
+      <body className="min-h-full flex flex-col relative cursor-none">
         <CustomCursor />
         {children}
       </body>
