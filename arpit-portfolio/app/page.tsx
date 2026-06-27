@@ -400,7 +400,7 @@ export default function Portfolio() {
             animate={{ scale: 1 }}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            onClick={{() => setIsChatOpen(true)}}
+            onClick={() => setIsChatOpen(true)}
             className="w-14 h-14 bg-white text-black rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(255,255,255,0.2)] cursor-none"
           >
             <MessageSquare size={24} />
