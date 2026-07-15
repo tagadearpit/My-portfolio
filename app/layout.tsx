@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import "./globals.css";
 
-const siteUrl = "https://tagadearpit.vercel.app";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim() || "https://my-portfolio-snowy-sigma-18.vercel.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -39,9 +39,7 @@ export const metadata: Metadata = {
     description: "Production systems across AI, realtime software, and physical hardware.",
     images: ["/og-card.svg"],
   },
-  icons: {
-    icon: "/favicon.svg",
-  },
+  icons: { icon: "/favicon.svg" },
   manifest: "/manifest.webmanifest",
 };
 
@@ -49,7 +47,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
-  themeColor: "#05070b",
+  themeColor: "#05070c",
   colorScheme: "dark",
 };
 

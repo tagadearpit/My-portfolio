@@ -1,28 +1,33 @@
-# ⚡ Arpit Tagade — Futuristic Engineering Portfolio
+# Arpit Tagade — Clean Futuristic Portfolio
 
-A production-oriented portfolio for **Arpit Tagade**, built from scratch with Next.js, React, TypeScript, Framer Motion, and a lightweight portfolio assistant.
+A production-ready engineering portfolio built with **Next.js, React, TypeScript, and Framer Motion**.
 
-## 🌐 Live site
+The interface is intentionally cleaner than the previous version: larger typography, stronger spacing, fewer decorative distractions, clearer project storytelling, and lighter motion.
 
-- Portfolio: [tagadearpit.vercel.app](https://tagadearpit.vercel.app)
+## Live portfolio
+
+- Portfolio: [my-portfolio-snowy-sigma-18.vercel.app](https://my-portfolio-snowy-sigma-18.vercel.app)
 - GitHub: [github.com/tagadearpit](https://github.com/tagadearpit)
 - LinkedIn: [linkedin.com/in/tagadearpit](https://www.linkedin.com/in/tagadearpit)
 
-## ✨ Included
+## What is included
 
-- Futuristic responsive interface with three persistent signal themes
-- Accessible first-visit boot sequence with skip and reduced-motion handling
-- Interactive project case studies for Monika AI, Neosis, and CandyRobot
-- Technical capability and stack matrices
-- Resume view/download support
-- SEO metadata, Open Graph artwork, sitemap, robots, manifest, and JSON-LD
-- Optional Gemini-powered portfolio assistant
+- Large, responsive hero typography
+- Clean glass navigation with active-section tracking
+- Futuristic software-to-hardware system map
+- Custom CSS project previews for Monika AI, Neosis, and CandyRobot
+- Direct live-project and GitHub links
+- Expertise, stack, education, and engineering-principle sections
+- Downloadable resume at `public/Arpit-Tagade-Resume.pdf`
+- Responsive mobile menu
+- Reduced-motion support
+- Optional Gemini portfolio assistant
 - Deterministic local assistant fallback when no API key is configured
-- Basic request validation and best-effort in-memory rate limiting for chat
+- SEO metadata, sitemap, robots, web manifest, Open Graph image, and JSON-LD
 - Security response headers
 - GitHub Actions validation workflow
 
-## 🧱 Stack
+## Stack
 
 | Layer | Technology |
 |---|---|
@@ -34,14 +39,14 @@ A production-oriented portfolio for **Arpit Tagade**, built from scratch with Ne
 | Optional AI | Gemini REST API |
 | Hosting | Vercel |
 
-## 🚀 Local development
+## Local development
 
-### Requirements
+Requirements:
 
-- Node.js 22+
-- npm 10+
+- Node.js 22.x
+- npm 10.x
 
-### Install and run
+Install and run:
 
 ```bash
 npm ci
@@ -50,43 +55,53 @@ npm run dev
 
 Open `http://localhost:3000`.
 
-### Validate the production build
+Validate before pushing:
 
 ```bash
 npm run lint
 npm run typecheck
 npm run build
-npm start
+npm audit --omit=dev
 ```
 
-## 🤖 Optional Gemini assistant
+## Environment variables
 
-The portfolio works without Gemini. Without an API key, `/api/chat` returns deterministic answers from a verified local project knowledge base.
-
-To enable Gemini, create `.env.local`:
+Create `.env.local` only when needed:
 
 ```env
-GEMINI_API_KEY=your_server_side_api_key
+NEXT_PUBLIC_SITE_URL=https://my-portfolio-snowy-sigma-18.vercel.app
+GEMINI_API_KEY=your_server_side_key
 GEMINI_MODEL=gemini-2.5-flash
 ```
 
-Never expose the key through a `NEXT_PUBLIC_` variable and never commit `.env.local`.
+The AI assistant still answers verified portfolio questions without `GEMINI_API_KEY`.
 
-## ☁️ Vercel deployment
+Never expose the Gemini key through a `NEXT_PUBLIC_` variable.
 
-1. Push this repository to GitHub.
-2. Open Vercel and choose **Add New → Project**.
-3. Import the GitHub repository.
-4. Framework preset: **Next.js**.
-5. Root directory: repository root (`.`).
-6. Build command: leave the detected `next build` command.
-7. Output directory: leave the Next.js default.
-8. Add `GEMINI_API_KEY` and `GEMINI_MODEL` only when enabling the AI endpoint.
-9. Deploy.
+## Vercel deployment
 
-To use the existing custom domain, attach `tagadearpit.vercel.app` or update the metadata base in `app/layout.tsx`, `app/robots.ts`, and `app/sitemap.ts` if the final domain changes.
+Use these settings:
 
-## 📁 Structure
+| Setting | Value |
+|---|---|
+| Framework Preset | Next.js |
+| Root Directory | `./` |
+| Node.js Version | `22.x` |
+| Install Command | `npm ci` |
+| Build Command | `npm run build` |
+| Output Directory | Leave empty |
+
+After replacing the old project files:
+
+```bash
+git add .
+git commit -m "Redesign portfolio with clean futuristic interface"
+git push origin main
+```
+
+If Vercel shows an old version, redeploy once without the existing build cache.
+
+## Project structure
 
 ```text
 .
@@ -100,7 +115,6 @@ To use the existing custom domain, attach `tagadearpit.vercel.app` or update the
 │   └── sitemap.ts
 ├── components/
 │   ├── AIAssistant.tsx
-│   ├── BootSequence.tsx
 │   ├── PortfolioShell.tsx
 │   └── ProjectCard.tsx
 ├── data/portfolio.ts
@@ -110,18 +124,19 @@ To use the existing custom domain, attach `tagadearpit.vercel.app` or update the
 │   └── og-card.svg
 ├── .github/workflows/ci.yml
 ├── .env.example
+├── .npmrc
 ├── next.config.ts
 └── package.json
 ```
 
-## 🔐 Production notes
+## Production notes
 
-- The assistant rate limiter is process-local. For sustained public traffic or multi-instance deployment, replace it with Redis/Upstash or another shared rate limiter.
-- The assistant is intentionally scoped to portfolio facts and uses low-temperature generation to reduce invention.
-- No contact form backend is included. Contact actions open the visitor’s email client, avoiding hidden storage of submitted personal data.
-- The resume contains personal contact information because it is intentionally published as a downloadable document.
-- Animations automatically reduce under `prefers-reduced-motion` and pointer-heavy effects are disabled on coarse input devices.
+- The assistant rate limiter is process-local. Replace it with a shared Redis/Upstash limiter for sustained multi-instance traffic.
+- The assistant is restricted to portfolio facts and falls back to deterministic answers if Gemini is unavailable.
+- Contact actions use the visitor's email client; no personal submissions are stored by the site.
+- The resume is intentionally public and contains the contact details present in the uploaded resume.
+- Motion is reduced automatically when the browser reports `prefers-reduced-motion`.
 
-## 📜 License
+## License
 
 MIT © 2026 Arpit Tagade

@@ -1,11 +1,10 @@
 {
-  "name": "arpit-futuristic-portfolio",
-  "version": "1.0.0",
+  "name": "arpit-clean-futuristic-portfolio",
+  "version": "2.0.0",
   "private": true,
   "engines": {
-  "node": "22.x"
-},
-"packageManager": "npm@10.9.2",
+    "node": "22.x"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -30,5 +29,6 @@
   },
   "overrides": {
     "postcss": "8.5.10"
-  }
+  },
+  "packageManager": "npm@10.9.2"
 }
