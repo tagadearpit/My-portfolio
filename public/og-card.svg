@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#05070b"/>
+      <stop offset="1" stop-color="#0b1220"/>
+    </linearGradient>
+    <radialGradient id="glow">
+      <stop stop-color="#3ee7ff" stop-opacity=".26"/>
+      <stop offset="1" stop-color="#3ee7ff" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#6c8297" stroke-opacity=".11"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <circle cx="925" cy="250" r="340" fill="url(#glow)"/>
+  <circle cx="930" cy="290" r="190" fill="none" stroke="#3ee7ff" stroke-opacity=".34"/>
+  <circle cx="930" cy="290" r="125" fill="none" stroke="#3ee7ff" stroke-opacity=".2" stroke-dasharray="8 12"/>
+  <rect x="858" y="218" width="144" height="144" rx="28" transform="rotate(45 930 290)" fill="#071018" stroke="#3ee7ff" stroke-opacity=".7"/>
+  <text x="930" y="308" text-anchor="middle" font-family="monospace" font-size="42" font-weight="700" fill="#3ee7ff">AT</text>
+  <text x="78" y="118" font-family="monospace" font-size="18" letter-spacing="4" fill="#3ee7ff">FULL-STACK AI ENGINEER / HARDWARE DEVELOPER</text>
+  <text x="72" y="254" font-family="Arial, sans-serif" font-size="104" font-weight="900" letter-spacing="-6" fill="#f2f7fb">ARPIT</text>
+  <text x="72" y="354" font-family="Arial, sans-serif" font-size="104" font-weight="900" letter-spacing="-6" fill="none" stroke="#c9d9e6" stroke-opacity=".68">TAGADE</text>
+  <text x="78" y="430" font-family="Arial, sans-serif" font-size="28" fill="#9aa9b8">Production systems across AI, realtime software,</text>
+  <text x="78" y="468" font-family="Arial, sans-serif" font-size="28" fill="#9aa9b8">and physical hardware.</text>
+  <rect x="78" y="527" width="180" height="2" fill="#3ee7ff"/>
+  <text x="78" y="565" font-family="monospace" font-size="15" letter-spacing="2" fill="#6f8294">NAGPUR / INDIA · SYSTEM ONLINE</text>
+</svg>
