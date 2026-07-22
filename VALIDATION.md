@@ -1,21 +1,20 @@
 # Validation Report
 
-Validated on 2026-07-15.
+Validated on 2026-07-23.
 
-## Passed
+## Automated checks
 
 ```text
-npm ci                    PASS
-npm run lint              PASS
-npm run typecheck         PASS
-npm run build             PASS
-npm audit --omit=dev      0 vulnerabilities
-GET /                     PASS
-POST /api/chat            PASS (local deterministic mode)
-GET resume PDF            PASS (55,303 bytes)
+npm ci                              PASS
+npm run lint                        PASS
+npm run typecheck                   PASS
+npm run build                       PASS
+npm audit --omit=dev                PASS — 0 vulnerabilities
+PostCSS syntax parse                PASS
+git diff --check                    PASS
 ```
 
-## Build output
+The production build completed with Next.js 16.2.11 and generated the expected routes:
 
 ```text
 /                         Static
@@ -25,16 +24,32 @@ GET resume PDF            PASS (55,303 bytes)
 /sitemap.xml              Static metadata route
 ```
 
-## Design changes
+## Runtime checks
 
-- Removed the blocking first-visit boot screen.
-- Increased body, heading, project, navigation, and button typography.
-- Reduced decorative density and removed the animated technology marquee.
-- Rebuilt the hero as a clean two-column composition.
-- Added custom project interface previews without external image dependencies.
-- Simplified navigation and retained only purposeful motion.
-- Added responsive layouts for 1120px, 820px, and 580px breakpoints.
+```text
+GET /                                  200
+GET /Arpit-Tagade-Resume.pdf           200 (55,303 bytes)
+GET /manifest.webmanifest              200
+POST /api/chat                         200 (deterministic local mode)
+POST /api/chat with malformed JSON     400
+13th assistant request in 60 seconds   429 with Retry-After: 60
+```
 
-## Residual operational note
+The rendered metadata, canonical URL, robots file, sitemap, and JSON-LD resolve to `https://tagadearpit.vercel.app`. Assistant responses are explicitly marked `Cache-Control: no-store`, and the expected cross-origin, transport-security, and content-type headers are present.
 
-The portfolio assistant uses an in-process rate limiter. It is acceptable for a single Vercel instance and low traffic, but it is not a globally consistent abuse-control mechanism across distributed serverless instances.
+## Interaction and visual-system changes
+
+- Replaced eager Framer Motion components with `LazyMotion` and the smaller DOM animation feature set.
+- Added coordinated hero, section, statistics, card, and contact reveals.
+- Added spring-based header state, active-navigation motion, and fine-pointer depth interactions.
+- Added layered glass surfaces with solid-color fallbacks when backdrop filters are unsupported.
+- Disabled expensive transparency and headline effects on smaller or coarse-pointer devices.
+- Preserved `prefers-reduced-motion` and added `prefers-reduced-transparency` handling.
+- Added Escape handling, focus containment, focus return, and scroll locking for both modal surfaces.
+
+## Dependency and operational notes
+
+- Next.js and its ESLint configuration are pinned to 16.2.11.
+- Sharp is overridden to 0.35.3 to remove the audited libvips vulnerability affecting the previous transitive version.
+- The validation runner uses Node.js 24 while the project, CI, and Vercel configuration target Node.js 22.x; the engine warning is expected and the Node 22 target remains intentional.
+- The assistant rate limiter is process-local. A shared Redis or Upstash limiter is still required if the portfolio is scaled across multiple long-lived instances or needs globally consistent abuse controls.

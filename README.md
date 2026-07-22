@@ -1,12 +1,12 @@
-# Arpit Tagade — Clean Futuristic Portfolio
+# Arpit Tagade — Interactive Engineering Portfolio
 
 A production-ready engineering portfolio built with **Next.js, React, TypeScript, and Framer Motion**.
 
-The interface is intentionally cleaner than the previous version: larger typography, stronger spacing, fewer decorative distractions, clearer project storytelling, and lighter motion.
+The interface combines restrained glassmorphism with a layered Framer Motion system: coordinated reveals, spring-based navigation state, pointer-responsive project previews, and reduced-motion fallbacks. Expensive transparency effects are intentionally reduced on touch devices.
 
 ## Live portfolio
 
-- Portfolio: [my-portfolio-snowy-sigma-18.vercel.app](https://my-portfolio-snowy-sigma-18.vercel.app)
+- Portfolio: [tagadearpit.vercel.app](https://tagadearpit.vercel.app)
 - GitHub: [github.com/tagadearpit](https://github.com/tagadearpit)
 - LinkedIn: [linkedin.com/in/tagadearpit](https://www.linkedin.com/in/tagadearpit)
 
@@ -14,13 +14,17 @@ The interface is intentionally cleaner than the previous version: larger typogra
 
 - Large, responsive hero typography
 - Clean glass navigation with active-section tracking
+- Compact spring-animated header state after scrolling
+- Pointer-responsive hero and project depth on fine-pointer devices
+- Staggered, viewport-aware section reveals using Framer Motion
 - Futuristic software-to-hardware system map
 - Custom CSS project previews for Monika AI, Neosis, and CandyRobot
 - Direct live-project and GitHub links
 - Expertise, stack, education, and engineering-principle sections
 - Downloadable resume at `public/Arpit-Tagade-Resume.pdf`
 - Responsive mobile menu
-- Reduced-motion support
+- Keyboard-contained modal navigation and portfolio assistant
+- Reduced-motion and reduced-transparency support
 - Optional Gemini portfolio assistant
 - Deterministic local assistant fallback when no API key is configured
 - SEO metadata, sitemap, robots, web manifest, Open Graph image, and JSON-LD
@@ -69,7 +73,7 @@ npm audit --omit=dev
 Create `.env.local` only when needed:
 
 ```env
-NEXT_PUBLIC_SITE_URL=https://my-portfolio-snowy-sigma-18.vercel.app
+NEXT_PUBLIC_SITE_URL=https://tagadearpit.vercel.app
 GEMINI_API_KEY=your_server_side_key
 GEMINI_MODEL=gemini-2.5-flash
 ```

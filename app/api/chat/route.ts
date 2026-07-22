@@ -6,6 +6,7 @@ export const runtime = "nodejs";
 const WINDOW_MS = 60_000;
 const MAX_REQUESTS = 12;
 const requestWindows = new Map<string, { count: number; resetAt: number }>();
+const noStoreHeaders = { "Cache-Control": "no-store, max-age=0" };
 
 function getClientKey(request: NextRequest) {
   return request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "local";
@@ -108,7 +109,7 @@ export async function POST(request: NextRequest) {
   if (isRateLimited(clientKey)) {
     return NextResponse.json(
       { error: "Request limit reached. Please wait a minute before asking again." },
-      { status: 429 },
+      { status: 429, headers: { ...noStoreHeaders, "Retry-After": "60" } },
     );
   }
 
@@ -116,7 +117,7 @@ export async function POST(request: NextRequest) {
   try {
     payload = await request.json();
   } catch {
-    return NextResponse.json({ error: "Invalid JSON request." }, { status: 400 });
+    return NextResponse.json({ error: "Invalid JSON request." }, { status: 400, headers: noStoreHeaders });
   }
 
   const message =
@@ -127,20 +128,23 @@ export async function POST(request: NextRequest) {
   if (!message || message.length > 500) {
     return NextResponse.json(
       { error: "Message must contain between 1 and 500 characters." },
-      { status: 400 },
+      { status: 400, headers: noStoreHeaders },
     );
   }
 
   const apiKey = process.env.GEMINI_API_KEY?.trim();
   if (!apiKey) {
-    return NextResponse.json({ response: localAnswer(message), mode: "local" });
+    return NextResponse.json({ response: localAnswer(message), mode: "local" }, { headers: noStoreHeaders });
   }
 
   try {
     const response = await geminiAnswer(message, apiKey);
-    return NextResponse.json({ response, mode: "gemini" });
+    return NextResponse.json({ response, mode: "gemini" }, { headers: noStoreHeaders });
   } catch (error) {
     console.error("Portfolio assistant fallback:", error instanceof Error ? error.message : error);
-    return NextResponse.json({ response: localAnswer(message), mode: "fallback" });
+    return NextResponse.json(
+      { response: localAnswer(message), mode: "fallback" },
+      { headers: noStoreHeaders },
+    );
   }
 }
