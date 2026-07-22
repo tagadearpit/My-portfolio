@@ -1,7 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
 import { ArrowUpRight, CheckCircle2, Github, Radio } from "lucide-react";
+import type { CSSProperties, PointerEvent as ReactPointerEvent } from "react";
 import type { projects } from "@/data/portfolio";
 
 type Project = (typeof projects)[number];
@@ -71,18 +72,50 @@ function ProjectPreview({ project }: { project: Project }) {
 
 export function ProjectCard({ project, position }: { project: Project; position: number }) {
   const Icon = project.icon;
+  const reduceMotion = useReducedMotion();
+  const rawPreviewX = useMotionValue(0);
+  const rawPreviewY = useMotionValue(0);
+  const previewX = useSpring(rawPreviewX, { stiffness: 180, damping: 24, mass: 0.45 });
+  const previewY = useSpring(rawPreviewY, { stiffness: 180, damping: 24, mass: 0.45 });
+
+  const handlePointerMove = (event: ReactPointerEvent<HTMLElement>) => {
+    if (reduceMotion || event.pointerType === "touch") return;
+
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const x = (event.clientX - bounds.left) / bounds.width;
+    const y = (event.clientY - bounds.top) / bounds.height;
+
+    event.currentTarget.style.setProperty("--pointer-x", `${x * 100}%`);
+    event.currentTarget.style.setProperty("--pointer-y", `${y * 100}%`);
+    rawPreviewX.set((x - 0.5) * 10);
+    rawPreviewY.set((y - 0.5) * 8);
+  };
+
+  const resetPointer = () => {
+    rawPreviewX.set(0);
+    rawPreviewY.set(0);
+  };
 
   return (
-    <motion.article
+    <m.article
       className={`project-card project-${project.tone} ${position === 0 ? "project-featured" : ""}`}
+      style={{ "--pointer-x": "50%", "--pointer-y": "50%" } as CSSProperties}
       initial={{ opacity: 0, y: 36 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.16 }}
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+      whileHover={reduceMotion ? undefined : { y: -4 }}
+      onPointerMove={handlePointerMove}
+      onPointerLeave={resetPointer}
     >
       <div className="project-visual">
         <div className="project-number">{project.index}</div>
-        <ProjectPreview project={project} />
+        <m.div
+          className="project-preview-motion"
+          style={reduceMotion ? undefined : { x: previewX, y: previewY }}
+        >
+          <ProjectPreview project={project} />
+        </m.div>
       </div>
 
       <div className="project-copy">
@@ -127,6 +160,6 @@ export function ProjectCard({ project, position }: { project: Project; position:
           </a>
         </div>
       </div>
-    </motion.article>
+    </m.article>
   );
 }

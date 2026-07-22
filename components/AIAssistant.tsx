@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m, useReducedMotion } from "framer-motion";
 import { Bot, LoaderCircle, MessageSquareText, Send, Sparkles, X } from "lucide-react";
 import { FormEvent, useEffect, useRef, useState } from "react";
 
@@ -9,6 +9,7 @@ type Message = { role: "assistant" | "user"; text: string };
 const suggestions = ["What does Arpit build?", "Tell me about Neosis", "How can I contact Arpit?"];
 
 export function AIAssistant() {
+  const reduceMotion = useReducedMotion();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [input, setInput] = useState("");
@@ -19,10 +20,56 @@ export function AIAssistant() {
     },
   ]);
   const endRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, loading]);
+    endRef.current?.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "nearest" });
+  }, [messages, loading, reduceMotion]);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const panel = panelRef.current;
+    const trigger = triggerRef.current;
+    const previousOverflow = document.body.style.overflow;
+
+    document.body.style.overflow = "hidden";
+    window.requestAnimationFrame(() => inputRef.current?.focus());
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpen(false);
+        return;
+      }
+
+      if (event.key !== "Tab") return;
+
+      const focusable = panel?.querySelectorAll<HTMLElement>(
+        'button:not([disabled]), input:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])',
+      );
+      const first = focusable?.[0];
+      const last = focusable?.[focusable.length - 1];
+      if (!first || !last) return;
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = previousOverflow;
+      trigger?.focus();
+    };
+  }, [open]);
 
   const submit = async (event?: FormEvent, preset?: string) => {
     event?.preventDefault();
@@ -62,23 +109,26 @@ export function AIAssistant() {
 
   return (
     <>
-      <motion.button
+      <m.button
+        ref={triggerRef}
         type="button"
         className="assistant-trigger"
-        whileHover={{ y: -3 }}
-        whileTap={{ scale: 0.96 }}
+        whileHover={reduceMotion ? undefined : { y: -3 }}
+        whileTap={reduceMotion ? undefined : { scale: 0.96 }}
         onClick={() => setOpen(true)}
         aria-label="Open portfolio assistant"
+        aria-expanded={open}
+        aria-controls="portfolio-assistant"
       >
         <span className="assistant-pulse" aria-hidden="true" />
         <MessageSquareText size={19} />
         <span>Ask portfolio AI</span>
-      </motion.button>
+      </m.button>
 
       <AnimatePresence>
         {open ? (
           <>
-            <motion.button
+            <m.button
               type="button"
               className="assistant-backdrop"
               aria-label="Close assistant"
@@ -87,7 +137,9 @@ export function AIAssistant() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             />
-            <motion.aside
+            <m.aside
+              ref={panelRef}
+              id="portfolio-assistant"
               className="assistant-panel"
               role="dialog"
               aria-modal="true"
@@ -110,9 +162,9 @@ export function AIAssistant() {
                 </button>
               </header>
 
-              <div className="assistant-messages">
+              <div className="assistant-messages" role="log" aria-live="polite" aria-relevant="additions">
                 {messages.map((message, index) => (
-                  <motion.div
+                  <m.div
                     key={`${message.role}-${index}`}
                     className={`assistant-message assistant-message-${message.role}`}
                     initial={{ opacity: 0, y: 8 }}
@@ -120,7 +172,7 @@ export function AIAssistant() {
                   >
                     {message.role === "assistant" ? <Sparkles size={14} /> : null}
                     <p>{message.text}</p>
-                  </motion.div>
+                  </m.div>
                 ))}
                 {loading ? (
                   <div className="assistant-message assistant-message-assistant">
@@ -144,6 +196,7 @@ export function AIAssistant() {
               <form className="assistant-form" onSubmit={(event) => void submit(event)}>
                 <label htmlFor="assistant-message" className="sr-only">Ask a question</label>
                 <input
+                  ref={inputRef}
                   id="assistant-message"
                   value={input}
                   onChange={(event) => setInput(event.target.value)}
@@ -156,7 +209,7 @@ export function AIAssistant() {
                 </button>
               </form>
               <p className="assistant-note">Optional Gemini enhancement; deterministic portfolio answers remain available without an API key.</p>
-            </motion.aside>
+            </m.aside>
           </>
         ) : null}
       </AnimatePresence>

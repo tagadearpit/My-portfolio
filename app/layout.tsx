@@ -1,8 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
+import { siteUrl } from "@/data/site";
 import "./globals.css";
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim() || "https://my-portfolio-snowy-sigma-18.vercel.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
